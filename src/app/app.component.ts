@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -6,10 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(private sanitizer: DomSanitizer){}
   a = "";
   template  = "";
   copy;
-  html = ""
+  html = "";
+  safehtml;
   Reg = new RegExp(/[\n\r\ ]/g);
   Reg2 = new RegExp(/\[(.*?)\]/)
   onbuttonclik(){
@@ -25,10 +28,11 @@ export class AppComponent {
    }
 this.html = this.copy.join(" ");
 
+
 }
 
-
-this.html = "<html>\n<body>\n" + this.html +  "\n</html>\n</body>\n"
+  this.safehtml = this.sanitizer.bypassSecurityTrustHtml(this.html);
+// this.html = "<html>\n<body>\n" + this.html +  "\n</html>\n</body>\n"
   console.log(this.html)
 
 
